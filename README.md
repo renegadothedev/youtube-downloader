@@ -8,7 +8,6 @@
 
 ## 🌍 Bilingual README (PT/EN)
 
-[🇧🇷 Ler em Português](#português-br) | [🇺🇸 Read in English](#english-us)
 
 ---
 
