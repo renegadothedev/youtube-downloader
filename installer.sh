@@ -1,11 +1,19 @@
 #!/bin/bash
 
+# YouTube Downloader Installer
+# Autor: Renegado
+
 # Cores para terminal
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
+
+# Variáveis globais
+PYTHON_CMD="python3"
+PIP_CMD="pip3"
+REQUIREMENTS_FILE="requirements.txt"
 
 # Verifica se é root
 if [ "$(id -u)" -ne 0 ]; then
@@ -15,7 +23,7 @@ if [ "$(id -u)" -ne 0 ]; then
     if [[ ! $REPLY =~ ^[Ss]$ ]]; then
         exit 1
     fi
-    SUDO="sudo"
+    SUDO=""
 else
     SUDO=""
 fi
@@ -32,10 +40,9 @@ detect_distro() {
     fi
 }
 
-# Instala dependências básicas
+# Instala dependências básicas do sistema
 install_dependencies() {
     echo -e "${BLUE}Instalando dependências do sistema...${NC}"
-    
     detect_distro
     
     case $DISTRO in
@@ -61,39 +68,35 @@ install_dependencies() {
             ;;
     esac
 
-    # Verifica se o Python foi instalado corretamente
     if ! command -v python3 >/dev/null; then
         echo -e "${RED}Erro: Falha ao instalar Python3${NC}"
         exit 1
     fi
 }
 
-# Instala dependências Python
+# Instala pacotes Python usando requirements.txt
 install_python_packages() {
-    echo -e "${BLUE}Instalando pacotes Python...${NC}"
+    echo -e "${BLUE}Instalando pacotes Python do ${REQUIREMENTS_FILE}...${NC}"
     
-    # Cria um virtualenv (opcional)
+    # Pergunta sobre virtualenv
     read -p "Deseja criar um ambiente virtual Python? [S/n] " -n 1 -r
     echo
-    if [[ $REPLY =~ ^[Nn]$ ]]; then
-        PIP_CMD="pip3"
-        PYTHON_CMD="python3"
-    else
+    if [[ ! $REPLY =~ ^[Nn]$ ]]; then
         echo -e "${GREEN}Criando virtualenv em ./venv${NC}"
         python3 -m venv venv
-        PIP_CMD="./venv/bin/pip"
         PYTHON_CMD="./venv/bin/python"
+        PIP_CMD="./venv/bin/pip"
     fi
-    
-    # Instala pacotes
+
+    # Atualiza pip
     $PIP_CMD install --upgrade pip
-    $PIP_CMD install pytube requests google-api-python-client
-    
-    # Pacotes opcionais para desenvolvimento
-    read -p "Instalar pacotes para desenvolvimento? [y/N] " -n 1 -r
-    echo
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
-        $PIP_CMD install black flake8 pytest
+
+    # Instala todos os pacotes do requirements.txt
+    if [[ -f "$REQUIREMENTS_FILE" ]]; then
+        $PIP_CMD install -r "$REQUIREMENTS_FILE"
+    else
+        echo -e "${RED}Arquivo ${REQUIREMENTS_FILE} não encontrado!${NC}"
+        exit 1
     fi
 }
 
@@ -102,16 +105,17 @@ verify_installation() {
     echo -e "${BLUE}Verificando instalação...${NC}"
     
     if $PYTHON_CMD -c "import pytube" &>/dev/null; then
-        echo -e "${GREEN}Pytube instalado com sucesso!${NC}"
+        echo -e "${GREEN}✓ Pytube instalado com sucesso!${NC}"
     else
-        echo -e "${RED}Erro: Pytube não foi instalado corretamente${NC}"
+        echo -e "${RED}✗ Pacote 'pytube' não instalado${NC}"
+        echo -e "${RED}Erro: Dependências faltando. Execute o installer.sh novamente.${NC}"
         exit 1
     fi
-    
+
     if command -v ffmpeg >/dev/null; then
-        echo -e "${GREEN}FFmpeg instalado com sucesso!${NC}"
+        echo -e "${GREEN}✓ FFmpeg instalado com sucesso!${NC}"
     else
-        echo -e "${YELLOW}Aviso: FFmpeg não está instalado. Algumas funcionalidades podem não funcionar${NC}"
+        echo -e "${YELLOW}⚠ Aviso: FFmpeg não está instalado. Algumas funcionalidades podem não funcionar${NC}"
     fi
 }
 
@@ -124,4 +128,4 @@ install_python_packages
 verify_installation
 
 echo -e "\n${GREEN}Instalação concluída com sucesso!${NC}"
-echo -e "${YELLOW}Execute o script start.sh para iniciar o Script.${NC}"
+echo -e "${YELLOW}Execute o script start.sh para iniciar o YouTube Downloader.${NC}"
