@@ -15,9 +15,9 @@ if [ "$(id -u)" -ne 0 ]; then
     if [[ ! $REPLY =~ ^[Ss]$ ]]; then
         exit 1
     fi
-    SUDO=""
-else
     SUDO="sudo"
+else
+    SUDO=""
 fi
 
 # Detecta a distribuição Linux
@@ -47,7 +47,7 @@ install_dependencies() {
             $SUDO dnf install -y python3 python3-pip ffmpeg
             ;;
         arch|manjaro)
-            $SUDO pacman -Sy python python-pip ffmpeg
+            $SUDO pacman -Sy --noconfirm python python-pip ffmpeg
             ;;
         *)
             echo -e "${YELLOW}Distribuição não reconhecida. Instalando apenas Python3 e pip${NC}"
@@ -60,7 +60,7 @@ install_dependencies() {
             fi
             ;;
     esac
-    
+
     # Verifica se o Python foi instalado corretamente
     if ! command -v python3 >/dev/null; then
         echo -e "${RED}Erro: Falha ao instalar Python3${NC}"
@@ -77,10 +77,12 @@ install_python_packages() {
     echo
     if [[ $REPLY =~ ^[Nn]$ ]]; then
         PIP_CMD="pip3"
+        PYTHON_CMD="python3"
     else
         echo -e "${GREEN}Criando virtualenv em ./venv${NC}"
         python3 -m venv venv
         PIP_CMD="./venv/bin/pip"
+        PYTHON_CMD="./venv/bin/python"
     fi
     
     # Instala pacotes
@@ -99,7 +101,7 @@ install_python_packages() {
 verify_installation() {
     echo -e "${BLUE}Verificando instalação...${NC}"
     
-    if python3 -c "import pytube" &>/dev/null; then
+    if $PYTHON_CMD -c "import pytube" &>/dev/null; then
         echo -e "${GREEN}Pytube instalado com sucesso!${NC}"
     else
         echo -e "${RED}Erro: Pytube não foi instalado corretamente${NC}"
