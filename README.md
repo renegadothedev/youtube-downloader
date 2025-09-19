@@ -196,12 +196,6 @@ Contribuições são bem-vindas! Siga estos pasos:
 4. Push para a branch (`git push origin feature/AmazingFeature`)
 5. Abra um Pull Request
 
-## 📊 Estatísticas do Projeto
-
-![Lines of code](https://img.shields.io/tokei/lines/github/renegado/yt-downloader?style=flat-square)
-![Last commit](https://img.shields.io/github/last-commit/renegado/yt-downloader?style=flat-square)
-![Repository stars](https://img.shields.io/github/stars/renegado/yt-downloader?style=social)
-
 ## 🆘 Suporte
 
 Se precisar de ajuda:
