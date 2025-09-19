@@ -827,7 +827,7 @@ show_about() {
     echo
     echo -e "${GREEN}Sobre o Auto YouTube Downloader${NC}"
     echo -e "Versão: ${CYAN}$VERSION${NC}"
-    echo -e "Autor: ${CYAN}Seu Nome${NC}"
+    echo -e "Autor: ${CYAN}Renegado${NC}"
     echo -e "Descrição: Script para download de vídeos e áudios do YouTube"
     echo -e "            com interface amigável e tratamento de erros."
     echo
