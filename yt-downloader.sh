@@ -895,6 +895,143 @@ main() {
     fi
 }
 
+# Função para mostrar uso correto
+show_usage() {
+    echo -e "${GREEN}Uso: $0 [OPÇÕES]${NC}"
+    echo
+    echo "Opções:"
+    echo "  -u, --url URL        URL do vídeo para download"
+    echo "  -q, --quality QUALIDADE Qualidade do vídeo (padrão: $DEFAULT_QUALITY)"
+    echo "  -f, --format FORMATO Formato de saída (padrão: $DEFAULT_FORMAT)"
+    echo "  -t, --type TIPO      Tipo: video ou audio (padrão: video)"
+    echo "  -b, --batch ARQUIVO  Arquivo com lista de URLs para download em lote"
+    echo "  -h, --help           Mostrar esta ajuda"
+    echo "  -v, --version        Mostrar versão"
+    echo "  --update             Atualizar para versão mais recente"
+    echo
+    echo "Exemplos:"
+    echo "  $0 -u https://www.youtube.com/watch?v=XXXXX -q hd -f mp4"
+    echo "  $0 -u https://www.youtube.com/watch?v=XXXXX -t audio -f mp3"
+    echo "  $0 -b lista_urls.txt -q 720p"
+}
+
+# Função para verificar atualizações
+check_for_updates() {
+    echo -e "${BLUE}Verificando atualizações...${NC}"
+    local latest_version
+    latest_version=$(curl -s https://api.github.com/repos/renegado/yt-downloader/releases/latest | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
+    
+    if [ "$latest_version" != "$VERSION" ]; then
+        echo -e "${YELLOW}Nova versão disponível: $latest_version${NC}"
+        echo -e "${YELLOW}Atualizando...${NC}"
+        curl -sSL https://raw.githubusercontent.com/renegado/yt-downloader/main/yt-downloader.sh -o "$0"
+        chmod +x "$0"
+        echo -e "${GREEN}Atualizado com sucesso para versão $latest_version!${NC}"
+        exit 0
+    else
+        echo -e "${GREEN}Você já está na versão mais recente.${NC}"
+    fi
+}
+
+# Processar argumentos da linha de comando
+process_arguments() {
+    local url=""
+    local quality=""
+    local format=""
+    local type=""
+    local batch_file=""
+    
+    while [[ $# -gt 0 ]]; do
+        case $1 in
+            -u|--url)
+                url="$2"
+                shift 2
+                ;;
+            -q|--quality)
+                quality="$2"
+                shift 2
+                ;;
+            -f|--format)
+                format="$2"
+                shift 2
+                ;;
+            -t|--type)
+                type="$2"
+                shift 2
+                ;;
+            -b|--batch)
+                batch_file="$2"
+                shift 2
+                ;;
+            -h|--help)
+                show_usage
+                exit 0
+                ;;
+            -v|--version)
+                echo -e "${GREEN}Auto YouTube Downloader v$VERSION${NC}"
+                exit 0
+                ;;
+            --update)
+                check_for_updates
+                exit 0
+                ;;
+            *)
+                echo -e "${RED}Opção desconhecida: $1${NC}"
+                show_usage
+                exit 1
+                ;;
+        esac
+    done
+    
+    # Executar download baseado nos argumentos
+    if [ -n "$batch_file" ]; then
+        if [ ! -f "$batch_file" ]; then
+            echo -e "${RED}Arquivo não encontrado: $batch_file${NC}"
+            exit 1
+        fi
+        
+        # Processar arquivo em lote
+        while IFS= read -r line || [ -n "$line" ]; do
+            line=$(echo "$line" | xargs)
+            if [ -n "$line" ] && validate_url "$line"; then
+                execute_download "$line" "${quality:-$DEFAULT_QUALITY}" "${format:-$DEFAULT_FORMAT}" "${type:-video}"
+            fi
+        done < "$batch_file"
+    elif [ -n "$url" ]; then
+        # Download único
+        if validate_url "$url"; then
+            execute_download "$url" "${quality:-$DEFAULT_QUALITY}" "${format:-$DEFAULT_FORMAT}" "${type:-video}"
+        else
+            echo -e "${RED}URL inválida: $url${NC}"
+            exit 1
+        fi
+    else
+        # Modo interativo
+        return
+    fi
+    
+    exit 0
+}
+
+# Modificar a função main para processar argumentos
+main() {
+    # Processar argumentos se fornecidos
+    if [ $# -gt 0 ]; then
+        process_arguments "$@"
+    fi
+    
+    # Modo interativo
+    while true; do
+        show_banner
+        show_menu
+        process_menu_option
+    done
+}
+
+# Inicializar e executar
+initialize
+main "$@"
+
 # Inicializar e executar
 initialize
 main
