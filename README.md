@@ -218,7 +218,7 @@ Distribuído sob licença MIT. Veja `LICENSE` para mais informações.
 
 ## 🙌 Agradecimentos
 
-- Equipe do `youtube-dl` pelo incrível trabalho
+- Equipe a `Eu ;3` pelo incrível trabalho
 - Comunidade de código aberto
 - Contribuidores e testadores
 
