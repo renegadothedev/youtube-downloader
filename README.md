@@ -214,7 +214,7 @@ Distribuído sob licença MIT. Veja `LICENSE` para mais informações.
 
 ## 👨‍💻 Autor
 
-**Seu Nome** - [@Renegado]([https://github.com/seuusuario](https://github.com/renegadothedev))
+**Renegado** - [@Renegado]([https://github.com/seuusuario](https://github.com/renegadothedev))
 
 ## 🙌 Agradecimentos
 
