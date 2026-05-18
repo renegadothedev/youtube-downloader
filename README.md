@@ -4,227 +4,227 @@
 ![Bash](https://img.shields.io/badge/Bash-Script-4EAA25?style=for-the-badge&logo=gnu-bash&logoColor=white)
 ![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
 
-Um script bash avançado e elegante para download de vídeos e áudios do YouTube com interface intuitiva, tratamento robusto de erros e mais de 2000 linhas de código otimizado.
+An advanced and polished Bash script for downloading YouTube videos and audio with an intuitive interface, robust error handling, and optimized code.
 
-## ✨ Características Principais
+## ✨ Key Features
 
-| Funcionalidade | Descrição | Status |
-|----------------|-----------|--------|
-| 🎥 **Download de Vídeos** | Suporte a qualidades de 144p até 4K | ✅ |
-| 🎵 **Extração de Áudio** | MP3, M4A, WAV, AAC, FLAC, OGG | ✅ |
-| 🚀 **Interface Intuitiva** | Menus interativos coloridos | ✅ |
-| 📦 **Download em Lote** | Processamento múltiplo de URLs | ✅ |
-| 🔧 **Auto-instalação** | Instala dependências automaticamente | ✅ |
-| 🔄 **Auto-atualização** | Mantém youtube-dl atualizado | ✅ |
-| 📊 **Histórico** | Registro completo de downloads | ✅ |
-| 💾 **Configurações** | Preferências personalizáveis | ✅ |
-| 🔔 **Notificações** | Alertas do sistema | ✅ |
+| Feature | Description | Status |
+|---------|-------------|--------|
+| 🎥 **Video Download** | Supports qualities from 144p to 4K | ✅ |
+| 🎵 **Audio Extraction** | MP3, M4A, WAV, AAC, FLAC, OGG | ✅ |
+| 🚀 **Intuitive Interface** | Colorful interactive menus | ✅ |
+| 📦 **Batch Download** | Multiple URL processing | ✅ |
+| 🔧 **Auto-installation** | Automatically installs dependencies | ✅ |
+| 🔄 **Auto-update** | Keeps youtube-dl up to date | ✅ |
+| 📊 **History** | Full download record | ✅ |
+| 💾 **Settings** | Customizable preferences | ✅ |
+| 🔔 **Notifications** | System alerts | ✅ |
 
-## 🛠️ Pré-requisitos
+## 🛠️ Requirements
 
-- **Sistema**: Linux ou macOS
-- **Bash**: Versão 4.0 ou superior
-- **Conexão**: Internet para downloads
-- **Permissões**: Sudo para instalação de pacotes
+- **Platform**: Linux or macOS
+- **Bash**: Version 4.0 or higher
+- **Connection**: Internet access for downloads
+- **Permissions**: sudo for package installation
 
-## 📦 Instalação Rápida
+## 📦 Quick Install
 
 ```bash
-# Download e execução direta
+# Download and run directly
 curl -sSL https://raw.githubusercontent.com/seuusuario/yt-downloader/main/yt-downloader.sh | bash
 
-# Ou manualmente
+# Or manually
 wget -O yt-downloader.sh https://raw.githubusercontent.com/seuusuario/yt-downloader/main/yt-downloader.sh
 chmod +x yt-downloader.sh
 ./yt-downloader.sh
 ```
 
-## 🚀 Como Usar
+## 🚀 Usage
 
-### 🖥️ Modo Interativo (Recomendado)
+### 🖥️ Interactive Mode (Recommended)
 
 ```bash
 ./yt-downloader.sh
 ```
 
-Navegue pelo menu interativo com opções coloridas e intuitivas.
+Use the interactive menu with colorful, easy-to-navigate options.
 
-### ⚡ Modo Direto
+### ⚡ Direct Mode
 
 ```bash
-# Download de vídeo em alta qualidade
+# Download high-quality video
 ./yt-downloader.sh --url "https://youtube.com/watch?v=..." --quality hd --format mp4
 
-# Extrair áudio em MP3
+# Extract audio as MP3
 ./yt-downloader.sh --url "https://youtube.com/watch?v=..." --type audio --format mp3
 
-# Ver ajuda completa
+# Show full help
 ./yt-downloader.sh --help
 ```
 
-### 🎯 Opções de Qualidade
+### 🎯 Quality Options
 
-| Qualidade | Resolução | Descrição |
-|-----------|-----------|-----------|
-| `max` | Máxima | Melhor qualidade disponível |
+| Quality | Resolution | Description |
+|---------|------------|-------------|
+| `max` | Maximum | Best available quality |
 | `uhd` | 4K | 2160p (Ultra HD) |
 | `qhd` | 1440p | Quad HD |
 | `hd` | 1080p | Full HD |
 | `720p` | 720p | HD Ready |
 | `480p` | 480p | SD |
-| `360p` | 360p | Baixa qualidade |
-| `240p` | 240p | Qualidade muito baixa |
-| `144p` | 144p | Qualidade mínima |
-| `audio` | Áudio | Apenas áudio |
+| `360p` | 360p | Low quality |
+| `240p` | 240p | Very low quality |
+| `144p` | 144p | Minimum quality |
+| `audio` | Audio only | Audio-only download |
 
-### 🎵 Formatos Suportados
+### 🎵 Supported Formats
 
-**Vídeo:** `mp4`, `mkv`, `webm`, `flv`  
-**Áudio:** `mp3`, `m4a`, `wav`, `aac`, `flac`, `ogg`
+**Video:** `mp4`, `mkv`, `webm`, `flv`  
+**Audio:** `mp3`, `m4a`, `wav`, `aac`, `flac`, `ogg`
 
-## ⚙️ Configurações
+## ⚙️ Configuration
 
-Configure suas preferências no menu de configurações:
+Set your preferences in the settings menu:
 
 ```bash
-# Estrutura do arquivo de configuração
+# Configuration file path
 ~/.yt_downloader_config
 
-# Diretório padrão de downloads
+# Default download directory
 ~/YT_Downloads/
-├── 📁 videos/          # Vídeos baixados
-├── 📁 audio/           # Arquivos de áudio
-├── 📁 logs/            # Logs de operações
-└── 📄 download_history.txt  # Histórico completo
+├── 📁 videos/          # Downloaded videos
+├── 📁 audio/           # Audio files
+├── 📁 logs/            # Operation logs
+└── 📄 download_history.txt  # Full history
 ```
 
-## 🔧 Personalização
+## 🔧 Customization
 
-Edite as variáveis no script para personalizar o comportamento:
+Edit the variables in the script to customize behavior:
 
 ```bash
-# Diretório de downloads
+# Download directory
 DOWNLOAD_DIR="$HOME/YouTube_Downloads"
 
-# Número de tentativas
+# Retry count
 MAX_RETRIES=3
 
-# Timeout de operações
+# Operation timeout
 TIMEOUT=60
 
-# Formatos preferidos
+# Preferred formats
 DEFAULT_QUALITY="hd"
 DEFAULT_FORMAT="mp4"
 ```
 
-## 📊 Exemplos de Uso
+## 📊 Usage Examples
 
-### Exemplo 1: Download Simples
+### Example 1: Simple Download
 ```bash
 ./yt-downloader.sh --url "https://youtu.be/dQw4w9WgXcQ" --quality hd
 ```
 
-### Exemplo 2: Playlist Completa
+### Example 2: Full Playlist
 ```bash
-# Criar arquivo com URLs
+# Create a file with URLs
 echo "https://youtu.be/video1
 https://youtu.be/video2
 https://youtu.be/video3" > playlist.txt
 
-# Processar em lote
+# Process in batch
 ./yt-downloader.sh --batch playlist.txt --quality 720p
 ```
 
-### Exemplo 3: Extração de Áudio
+### Example 3: Audio Extraction
 ```bash
 ./yt-downloader.sh --url "https://youtu.be/audio_video" --type audio --format mp3 --quality audio
 ```
 
-## 🐛 Solução de Problemas
+## 🐛 Troubleshooting
 
-### ❌ Erro: "Dependências missing"
-**Solução:** O script tenta instalar automaticamente. Execute manualmente:
+### ❌ Error: "Missing dependencies"
+**Fix:** The script attempts automatic installation. Run manually:
 ```bash
 sudo apt update && sudo apt install youtube-dl ffmpeg python3 python3-pip
 ```
 
-### ❌ Erro: "Download falhou"
-**Solução:** Verifique a conexão e tente qualidade inferior:
+### ❌ Error: "Download failed"
+**Fix:** Check your connection and try a lower quality:
 ```bash
 ./yt-downloader.sh --url "URL" --quality 480p
 ```
 
-### ❌ Erro: "Formato não disponível"
-**Solução:** Liste formatos disponíveis:
+### ❌ Error: "Format not available"
+**Fix:** List available formats:
 ```bash
 youtube-dl -F "URL"
 ```
 
-### 📋 Logs Detalhados
-Consulte os logs para diagnóstico:
+### 📋 Detailed Logs
+Check logs for diagnostics:
 ```bash
 tail -f ~/yt_downloader.log
 cat ~/YT_Downloads/logs/download_*.log
 ```
 
-## 🔄 Atualização
+## 🔄 Update
 
-O script se atualiza automaticamente. Para atualização manual:
+The script updates automatically. For manual update:
 
 ```bash
 ./yt-downloader.sh --update
 
-# Ou manualmente
+# Or manually
 wget -O yt-downloader.sh https://raw.githubusercontent.com/renegado/yt-downloader/main/yt-downloader.sh
 ```
 
-## 📝 Notas Legais
+## 📝 Legal Notice
 
-⚠️ **Aviso Legal:** Use este script apenas para conteúdo que você tem direito de acessar. Respeite os direitos autorais e os termos de serviço do YouTube.
+⚠️ **Legal notice:** Use this script only for content you are authorized to access. Respect copyright and YouTube's terms of service.
 
-- ✅ Uso pessoal e educacional
-- ❌ Distribuição de conteúdo protegido
-- ❌ Violação de termos de serviço
+- ✅ Personal and educational use
+- ❌ Distribution of copyrighted content
+- ❌ Terms of service violations
 
-## 🤝 Contribuindo
+## 🤝 Contributing
 
-Contribuições são bem-vindas! Siga estos pasos:
+Contributions are welcome! Follow these steps:
 
-1. Fork do projeto
-2. Crie sua feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit suas mudanças (`git commit -m 'Add AmazingFeature'`)
-4. Push para a branch (`git push origin feature/AmazingFeature`)
-5. Abra um Pull Request
+1. Fork the project
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-## 🆘 Suporte
+## 🆘 Support
 
-Se precisar de ajuda:
+If you need help:
 
-1. Consulte a seção de troubleshooting acima
-2. Verifique os logs em `~/yt_downloader.log`
-3. Abra uma issue no GitHub com:
-   - Descrição detalhada do problema
-   - Comandos executados
-   - Saída relevante dos logs
-   - Informações do sistema
+1. Check the troubleshooting section above
+2. Review the logs at `~/yt_downloader.log`
+3. Open an issue on GitHub with:
+   - Detailed problem description
+   - Commands run
+   - Relevant log output
+   - System information
 
-## 📄 Licença
+## 📄 License
 
-Distribuído sob licença MIT. Veja `LICENSE` para mais informações.
+Distributed under the MIT license. See `LICENSE` for details.
 
-## 👨‍💻 Autor
+## 👨‍💻 Author
 
-**Renegado** - [@Renegado]([https://github.com/seuusuario](https://github.com/renegadothedev))
+**Renegado** - [@Renegado](https://github.com/renegadothedev)
 
-## 🙌 Agradecimentos
+## 🙌 Thanks
 
-- Equipe a `Eu ;3` pelo incrível trabalho
-- Comunidade de código aberto
-- Contribuidores e testadores
+- The `Eu ;3` team for the amazing work
+- Open source community
+- Contributors and testers
 
 ---
 
-**⭐ Se este projeto foi útil, deixe uma estrela no GitHub!**
+**⭐ If this project was helpful, give it a star on GitHub!**
 
 ![Footer](https://img.shields.io/badge/Made%20with-Bash-1f425f.svg?style=for-the-badge)
 ![Open Source](https://img.shields.io/badge/Open%20Source-❤-red.svg?style=for-the-badge)
