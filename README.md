@@ -4,223 +4,195 @@
 ![Bash](https://img.shields.io/badge/Bash-Script-4EAA25?style=for-the-badge&logo=gnu-bash&logoColor=white)
 ![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
 
-An advanced and polished Bash script for downloading YouTube videos and audio with an intuitive interface, robust error handling, and optimized code.
+Auto YouTube Downloader is a Bash-based tool for downloading YouTube videos and audio with an interactive menu, quality selection, download history logging, and `yt-dlp` support.
 
 ## ✨ Key Features
 
-| Feature | Description | Status |
-|---------|-------------|--------|
-| 🎥 **Video Download** | Supports qualities from 144p to 4K | ✅ |
-| 🎵 **Audio Extraction** | MP3, M4A, WAV, AAC, FLAC, OGG | ✅ |
-| 🚀 **Intuitive Interface** | Colorful interactive menus | ✅ |
-| 📦 **Batch Download** | Multiple URL processing | ✅ |
-| 🔧 **Auto-installation** | Automatically installs dependencies | ✅ |
-| 🔄 **Auto-update** | Keeps youtube-dl up to date | ✅ |
-| 📊 **History** | Full download record | ✅ |
-| 💾 **Settings** | Customizable preferences | ✅ |
-| 🔔 **Notifications** | System alerts | ✅ |
+| Feature | Description |
+|---------|-------------|
+| 🎥 Video download | Download video with selectable quality and output format |
+| 🎵 Audio extraction | Extract audio and convert to MP3, M4A, WAV, FLAC |
+| 🚀 Interactive menu | Choose options in a simple terminal UI |
+| 🔄 yt-dlp update | Update `yt-dlp` from the menu |
+| 📊 Download history | Save completed downloads to a history log |
+| ⚙️ Config file | Persistent default quality, format, and history settings |
 
 ## 🛠️ Requirements
 
 - **Platform**: Linux or macOS
 - **Bash**: Version 4.0 or higher
-- **Connection**: Internet access for downloads
-- **Permissions**: sudo for package installation
+- **Dependencies**: `yt-dlp`, `ffmpeg`, `curl`, `python3`
+- **Internet**: Required for downloads
+- **Permissions**: `sudo` may be required to install dependencies
 
 ## 📦 Quick Install
 
 ```bash
-# Download and run directly
-curl -sSL https://raw.githubusercontent.com/seuusuario/yt-downloader/main/yt-downloader.sh | bash
+wget -O yt-downloader.sh https://raw.githubusercontent.com/renegadothedev/youtube-downloader/main/yt-downloader.sh
+chmod +x yt-downloader.sh
+./yt-downloader.sh
+```
 
-# Or manually
-wget -O yt-downloader.sh https://raw.githubusercontent.com/seuusuario/yt-downloader/main/yt-downloader.sh
+Or with `curl`:
+
+```bash
+curl -L -o yt-downloader.sh https://raw.githubusercontent.com/renegadothedev/youtube-downloader/main/yt-downloader.sh
 chmod +x yt-downloader.sh
 ./yt-downloader.sh
 ```
 
 ## 🚀 Usage
 
-### 🖥️ Interactive Mode (Recommended)
+Start the script:
 
 ```bash
 ./yt-downloader.sh
 ```
 
-Use the interactive menu with colorful, easy-to-navigate options.
+Then choose one of the menu options:
 
-### ⚡ Direct Mode
+1. Download Video
+2. Download Audio
+3. Update yt-dlp
+4. View Download History
+5. Exit
 
-```bash
-# Download high-quality video
-./yt-downloader.sh --url "https://youtube.com/watch?v=..." --quality hd --format mp4
+## 🎯 Quality and Format Options
 
-# Extract audio as MP3
-./yt-downloader.sh --url "https://youtube.com/watch?v=..." --type audio --format mp3
+### Video qualities supported by the script
 
-# Show full help
-./yt-downloader.sh --help
-```
+- `max` — Best available quality
+- `4k` — Up to 2160p
+- `2k` — Up to 1440p
+- `1080p` — Up to 1080p
+- `720p` — Up to 720p
 
-### 🎯 Quality Options
+### Video formats
 
-| Quality | Resolution | Description |
-|---------|------------|-------------|
-| `max` | Maximum | Best available quality |
-| `uhd` | 4K | 2160p (Ultra HD) |
-| `qhd` | 1440p | Quad HD |
-| `hd` | 1080p | Full HD |
-| `720p` | 720p | HD Ready |
-| `480p` | 480p | SD |
-| `360p` | 360p | Low quality |
-| `240p` | 240p | Very low quality |
-| `144p` | 144p | Minimum quality |
-| `audio` | Audio only | Audio-only download |
+- `mp4`
+- `mkv`
+- `webm`
 
-### 🎵 Supported Formats
+### Audio formats
 
-**Video:** `mp4`, `mkv`, `webm`, `flv`  
-**Audio:** `mp3`, `m4a`, `wav`, `aac`, `flac`, `ogg`
+- `mp3`
+- `m4a`
+- `flac`
+- `wav`
 
 ## ⚙️ Configuration
 
-Set your preferences in the settings menu:
+The script stores persistent settings in:
 
 ```bash
-# Configuration file path
 ~/.yt_downloader_config
-
-# Default download directory
-~/YT_Downloads/
-├── 📁 videos/          # Downloaded videos
-├── 📁 audio/           # Audio files
-├── 📁 logs/            # Operation logs
-└── 📄 download_history.txt  # Full history
 ```
 
-## 🔧 Customization
-
-Edit the variables in the script to customize behavior:
+Example config content:
 
 ```bash
-# Download directory
-DOWNLOAD_DIR="$HOME/YouTube_Downloads"
-
-# Retry count
-MAX_RETRIES=3
-
-# Operation timeout
-TIMEOUT=60
-
-# Preferred formats
-DEFAULT_QUALITY="hd"
+DEFAULT_QUALITY="1080p"
 DEFAULT_FORMAT="mp4"
+SAVE_HISTORY=true
+AUTO_UPDATE=true
 ```
 
-## 📊 Usage Examples
+The configuration file controls:
 
-### Example 1: Simple Download
-```bash
-./yt-downloader.sh --url "https://youtu.be/dQw4w9WgXcQ" --quality hd
-```
+- default quality and format values
+- whether download history is saved
 
-### Example 2: Full Playlist
-```bash
-# Create a file with URLs
-echo "https://youtu.be/video1
-https://youtu.be/video2
-https://youtu.be/video3" > playlist.txt
+## 📁 Output Structure
 
-# Process in batch
-./yt-downloader.sh --batch playlist.txt --quality 720p
-```
+The tool stores downloads and logs under the default directory:
 
-### Example 3: Audio Extraction
-```bash
-./yt-downloader.sh --url "https://youtu.be/audio_video" --type audio --format mp3 --quality audio
+```text
+$HOME/Downloads/YT_Downloads/
+├── videos/          # downloaded video files
+├── audio/           # extracted audio files
+├── logs/            # yt-dlp and script logs
+└── history.log      # download history
 ```
 
 ## 🐛 Troubleshooting
 
-### ❌ Error: "Missing dependencies"
-**Fix:** The script attempts automatic installation. Run manually:
-```bash
-sudo apt update && sudo apt install youtube-dl ffmpeg python3 python3-pip
-```
-
-### ❌ Error: "Download failed"
-**Fix:** Check your connection and try a lower quality:
-```bash
-./yt-downloader.sh --url "URL" --quality 480p
-```
-
-### ❌ Error: "Format not available"
-**Fix:** List available formats:
-```bash
-youtube-dl -F "URL"
-```
-
-### 📋 Detailed Logs
-Check logs for diagnostics:
-```bash
-tail -f ~/yt_downloader.log
-cat ~/YT_Downloads/logs/download_*.log
-```
-
-## 🔄 Update
-
-The script updates automatically. For manual update:
+### Missing dependencies
+Install missing dependencies manually:
 
 ```bash
-./yt-downloader.sh --update
-
-# Or manually
-wget -O yt-downloader.sh https://raw.githubusercontent.com/renegado/yt-downloader/main/yt-downloader.sh
+sudo apt update && sudo apt install yt-dlp ffmpeg curl python3
 ```
 
-## 📝 Legal Notice
+On Arch Linux:
 
-⚠️ **Legal notice:** Use this script only for content you are authorized to access. Respect copyright and YouTube's terms of service.
+```bash
+sudo pacman -S yt-dlp ffmpeg curl python
+```
 
-- ✅ Personal and educational use
-- ❌ Distribution of copyrighted content
-- ❌ Terms of service violations
+On macOS:
+
+```bash
+brew install yt-dlp ffmpeg curl python
+```
+
+### Download failed
+Check your Internet connection and try a lower quality.
+
+### Format not available
+List available formats with:
+
+```bash
+yt-dlp -F "URL"
+```
+
+### View logs
+
+```bash
+tail -f "$HOME/Downloads/YT_Downloads/logs/yt_downloader.log"
+cat "$HOME/Downloads/YT_Downloads/history.log"
+```
+
+## 🔄 Updating yt-dlp
+
+Choose option 3 in the interactive menu to update `yt-dlp`.
+
+To update manually:
+
+```bash
+yt-dlp -U
+```
+
+## 💡 Notes
+
+- The script currently runs in interactive mode and does not support direct CLI arguments.
+- It uses `yt-dlp` instead of `youtube-dl`.
+- The `AUTO_UPDATE` setting is currently stored in the config file but not used for automatic self-updates.
 
 ## 🤝 Contributing
 
-Contributions are welcome! Follow these steps:
+Contributions are welcome! Please:
 
-1. Fork the project
+1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
 3. Commit your changes (`git commit -m 'Add AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
+4. Push the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
 ## 🆘 Support
 
 If you need help:
 
-1. Check the troubleshooting section above
-2. Review the logs at `~/yt_downloader.log`
-3. Open an issue on GitHub with:
-   - Detailed problem description
-   - Commands run
-   - Relevant log output
-   - System information
+- Check the troubleshooting section above
+- Review the logs at `$HOME/Downloads/YT_Downloads/logs/yt_downloader.log`
+- Open an issue on GitHub with a detailed description, commands run, log output, and system information
 
 ## 📄 License
 
-Distributed under the MIT license. See `LICENSE` for details.
+Distributed under the MIT License. See `LICENSE` for details.
 
 ## 👨‍💻 Author
 
-**Renegado** - [@Renegado](https://github.com/renegadothedev)
-
-## 🙌 Thanks
-
-- The `Eu ;3` team for the amazing work
-- Open source community
-- Contributors and testers
+**Renegado** - [@renegado](https://github.com/renegadothedev)
 
 ---
 
