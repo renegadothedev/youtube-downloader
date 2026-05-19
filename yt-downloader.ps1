@@ -85,25 +85,109 @@ function Save-Config {
     $json | Set-Content -Path $CONFIG_FILE -Force
 }
 
+function Get-PackageManager {
+    if ($IsWindows) {
+        if (Get-Command choco -ErrorAction SilentlyContinue) { return 'choco' }
+        if (Get-Command winget -ErrorAction SilentlyContinue) { return 'winget' }
+        return $null
+    }
+    if ($IsMacOS) {
+        if (Get-Command brew -ErrorAction SilentlyContinue) { return 'brew' }
+        return $null
+    }
+    if ($IsLinux) {
+        if (Get-Command apt-get -ErrorAction SilentlyContinue) { return 'apt-get' }
+        if (Get-Command apt -ErrorAction SilentlyContinue) { return 'apt' }
+        return $null
+    }
+    return $null
+}
+
+function Install-Dependencies {
+    param([string[]]$Packages)
+
+    $manager = Get-PackageManager
+    if (-not $manager) {
+        Write-Host "No supported package manager found. Install dependencies manually." -ForegroundColor Red
+        return $false
+    }
+
+    Write-Host "Installing missing dependencies using $manager..." -ForegroundColor Cyan
+    switch ($manager) {
+        'choco' {
+            $args = @('install', '-y') + $Packages
+            & choco @args
+            return $LASTEXITCODE -eq 0
+        }
+        'winget' {
+            foreach ($pkg in $Packages) {
+                $installPkg = $pkg
+                if ($pkg -eq 'python') { $installPkg = 'Python.Python.3' }
+                Write-Host "Installing $installPkg..." -ForegroundColor Cyan
+                & winget install --accept-package-agreements --accept-source-agreements $installPkg
+                if ($LASTEXITCODE -ne 0) { return $false }
+            }
+            return $true
+        }
+        'brew' {
+            $args = @('install') + $Packages
+            & brew @args
+            return $LASTEXITCODE -eq 0
+        }
+        'apt-get' {
+            $args = @('install', '-y') + $Packages
+            & sudo apt-get update
+            if ($LASTEXITCODE -ne 0) { return $false }
+            & sudo apt-get @args
+            return $LASTEXITCODE -eq 0
+        }
+        'apt' {
+            $args = @('install', '-y') + $Packages
+            & sudo apt update
+            if ($LASTEXITCODE -ne 0) { return $false }
+            & sudo apt @args
+            return $LASTEXITCODE -eq 0
+        }
+    }
+    return $false
+}
+
 function Check-Dependencies {
-    $missing = $false
+    $missingPackages = @()
     foreach ($pkg in $REQUIRED_PACKAGES) {
         if (-not (Get-Command $pkg -ErrorAction SilentlyContinue)) {
             Write-Host "[ERROR] Missing required package: $pkg" -ForegroundColor Red
-            $missing = $true
+            $missingPackages += $pkg
         }
     }
-    # Check python variants
+
     if (-not (Get-Command python3 -ErrorAction SilentlyContinue) -and -not (Get-Command python -ErrorAction SilentlyContinue)) {
         Write-Host "[ERROR] Missing required package: python3 or python" -ForegroundColor Red
-        $missing = $true
+        $missingPackages += 'python'
     }
 
-    if ($missing) {
-        Write-Host ""; Write-Host "Install the missing packages using:" -ForegroundColor Yellow
-        Write-Host "  Windows: choco install yt-dlp ffmpeg curl python" -ForegroundColor White
-        Write-Host "  Ubuntu/Debian: sudo apt install yt-dlp ffmpeg curl python3" -ForegroundColor White
-        Write-Host "  macOS: brew install yt-dlp ffmpeg curl python" -ForegroundColor White
+    if ($missingPackages.Count -gt 0) {
+        $missingPackages = $missingPackages | Select-Object -Unique
+        $installed = Install-Dependencies -Packages $missingPackages
+        if ($installed) {
+            Write-Host "Dependency installation finished. Re-checking dependencies..." -ForegroundColor Green
+            Start-Sleep -Seconds 2
+            $missingPackages = @()
+            foreach ($pkg in $REQUIRED_PACKAGES) {
+                if (-not (Get-Command $pkg -ErrorAction SilentlyContinue)) {
+                    $missingPackages += $pkg
+                }
+            }
+            if (-not (Get-Command python3 -ErrorAction SilentlyContinue) -and -not (Get-Command python -ErrorAction SilentlyContinue)) {
+                $missingPackages += 'python'
+            }
+            if ($missingPackages.Count -eq 0) {
+                return
+            }
+        }
+
+        Write-Host "Unable to install dependencies automatically." -ForegroundColor Red
+        Write-Host "Please install the missing packages manually." -ForegroundColor Yellow
         Pause-Screen
         Exit 1
     }
