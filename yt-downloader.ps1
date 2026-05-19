@@ -104,6 +104,7 @@ function Check-Dependencies {
         Write-Host "  Windows: choco install yt-dlp ffmpeg curl python" -ForegroundColor White
         Write-Host "  Ubuntu/Debian: sudo apt install yt-dlp ffmpeg curl python3" -ForegroundColor White
         Write-Host "  macOS: brew install yt-dlp ffmpeg curl python" -ForegroundColor White
+        Pause-Screen
         Exit 1
     }
 }
@@ -144,6 +145,14 @@ function Select-OptionFromList {
     }
 }
 
+function Get-OutputPath {
+    param([string]$Subfolder)
+
+    $basePath = Join-Path $DOWNLOAD_DIR $Subfolder
+    $normalizedPath = $basePath -replace '\\','/'
+    return "$normalizedPath/%(title)s.%(ext)s"
+}
+
 function Download-Media {
     param([string]$MediaType)
 
@@ -181,16 +190,18 @@ function Execute-Engine {
     $retries = 0
     Write-Host "Starting download..." -ForegroundColor Yellow
 
+    $outputPath = Get-OutputPath -Subfolder $output_subfolder
+
     while ($retries -lt $MAX_RETRIES) {
         if ($MediaType -eq 'Video') {
-            $args = @('-f', $QualityMap[$Quality], '--merge-output-format', $Format, '--no-mtime', '--add-metadata', '--embed-thumbnail', '--console-title', '-o', (Join-Path $DOWNLOAD_DIR $output_subfolder + '\%(title)s.%(ext)s'), $Url)
+            $args = @('-f', $QualityMap[$Quality], '--merge-output-format', $Format, '--no-mtime', '--add-metadata', '--embed-thumbnail', '--console-title', '-o', $outputPath, $Url)
             try {
                 & yt-dlp @args
             } catch {
                 # ignore, handle via exit code
             }
         } else {
-            $args = @('-x','--audio-format',$Format,'--audio-quality','0','--no-mtime','--add-metadata','--embed-thumbnail','--console-title','-o',(Join-Path $DOWNLOAD_DIR $output_subfolder + '\%(title)s.%(ext)s'),$Url)
+            $args = @('-x','--audio-format',$Format,'--audio-quality','0','--no-mtime','--add-metadata','--embed-thumbnail','--console-title','-o',$outputPath,$Url)
             try { & yt-dlp @args } catch {}
         }
 
@@ -257,5 +268,10 @@ function Main-Menu {
 }
 
 # Entry point
-Initialize
-Main-Menu
+try {
+    Initialize
+    Main-Menu
+} catch {
+    Write-Host "Unexpected error: $($_.Exception.Message)" -ForegroundColor Red
+    Pause-Screen
+}
