@@ -200,3 +200,21 @@ Distributed under the MIT License. See `LICENSE` for details.
 
 ![Footer](https://img.shields.io/badge/Made%20with-Bash-1f425f.svg?style=for-the-badge)
 ![Open Source](https://img.shields.io/badge/Open%20Source-❤-red.svg?style=for-the-badge)
+
+## HOW TO USE (detailed)
+
+Full multilingual usage instructions are available in the `HOWTOUSE.md` file. See that file for step-by-step install, run, examples and troubleshooting in Português, Español, English and Русский.
+
+Quick start:
+
+```bash
+chmod +x yt-downloader.sh
+./yt-downloader.sh
+```
+
+PowerShell (cross-platform):
+
+```powershell
+pwsh ./yt-downloader.ps1
+```
+
